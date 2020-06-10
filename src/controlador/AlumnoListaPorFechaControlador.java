@@ -24,9 +24,21 @@ public class AlumnoListaPorFechaControlador extends HttpServlet {
 		String des = request.getParameter("desde");
 		String has = request.getParameter("hasta");
 		
+		Date fecDesde = null, fecHasta = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-				
+		try {
+			fecDesde = new Date(sdf.parse(des).getTime());
+			fecHasta = new Date(sdf.parse(has).getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		AlumnoModel m = new AlumnoModel();
+		List<Alumno> lista = m.listaAlumnoPorFecha(fecDesde, fecHasta);
+		
+		request.setAttribute("ALUMNOS", lista);
+		request.getRequestDispatcher("/listaAlumnoPorFechaNacimiento.jsp").forward(request, response);
 	}
 
 }
